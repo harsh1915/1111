@@ -1,0 +1,474 @@
+>>>2nd(Linux instance)
+
+
+instance create
+mobax connect 
+in mobax
+	sudo su
+	yum install java
+yum install java-devel
+wget (apace tomact download ni link paste krva ni)
+tar -xvf apache-tomcat-10.0.12.tar.gz
+ls
+cd apache-tomcat-10.0.12/
+ls
+cd webapps
+ls
+mkdir kkk
+ls
+cd kkk/
+mkdir WEB-INF
+mkdir classes
+ls
+nano index.html
+<html>
+<body>
+<h1>helloooo!!!!!</h1>
+</body>
+</html>
+
+cat index.html
+cd ..
+ls
+cd ..
+ls
+cd conf
+ls
+vim tomcat-users.xml
+	(role=manager-gui name aapva nu
+	 username=tomcat
+	password=tomcat
+
+	total 5 mathi 2 line rakhva ni)
+esc : wq(aavi rite bar avashe)
+cd ..
+cd webapps
+ls
+cd host-manager/
+ls
+cd META-INF
+ls
+vim context.xml
+	(Valve vali line ne comment krva ni)
+cd ..
+cd WEB-INF
+ls
+vim manager.xml
+(Valve vali line ne comment krva ni)
+cd ..
+cd ..
+ls
+cd manager
+ls
+cd META-INF
+ls
+vim context.xml
+(Valve vali line ne comment krva ni)
+cd ..
+cd ..
+cd ..
+ls
+cd bin
+ ./startup.sh
+
+
+(instance ma inbound rule set krava nu HTTP & custom TCP:8080)
+new window open kri public ip:8080 paste kra nu etle tomcat nu open thse ane ema username-pw nakhva no)	
+	
+
+
+
+
+>>>3rd(Snapshot)
+
+
+create instance
+mobax ma javanu and connect karvanu
+sudo su
+mkdir kkk
+nano index.html
+good morning
+ctr+o,ctr+c,cir+x,ctr+y
+cat index.html
+instance ma open volumes
+actions
+create snapshot
+name aapvanu
+snapshot ma javanu
+actions
+create image
+image name and distcription
+create
+pachhi instance ne tarminate karvani
+ami
+lunch
+next next
+existing pem levani
+mobax ma public ip connect karvanu
+sudo su
+ls
+cat index.html
+
+
+
+>>>4th(MEtadata)
+
+new instance create karvani
+and script aapvani
+mail mathi lailevi
+mobax ma connect karvanu
+sudon su
+sudo yum install curl
+
+curl http://169.254.169.254/latest/meta-data
+
+curl http://169.254.169.254/latest/meta-data/tmare je service run krvi hoi e.
+
+
+>>>5-7th(Bucket)
+
+
+s3 service ma javanu 
+and bar notped++ par 2 file create karvani .html thi
+creat bucate 
+bucate name
+Object Ownership (enable krva ni)
+block all public access uncheck karavanu
+click karavanu turminet Of block
+create bucket
+bucket nu je name hoy amna par click karvanu
+buck ni andar javanu
+uplod
+add files
+select tu 2 file
+upload
+file ni name par click kar4ravanu
+eeror.html open 
+permission
+edit
+all read and right karvanu
+save change
+file ni name par click karravanu
+index.html open
+all read and right karvanu
+save change
+go in main bucket
+propartis
+satic website hosting 
+edit
+enable karavanu
+bane file nu name apvanu
+save
+properties  ma jaine static website host id copy karvanu(last ma hase)
+crome ma jaine past karvanu
+error page mate pot potana name lakhavanu
+for ex/khushbu
+
+
+
+------>>>7 practical(bucket versioning)
+bucket ni property ma becket version enable karvanu
+save
+show version
+error page delete karvanu and error page ma update karvanu
+upload 
+read read permition set karvani
+show version 
+chrom ma past karvanu
+
+
+
+>>>>8th(Load balancing)
+
+
+instance create krva na 2 (script thi configuration ma)
+second instance ma script ma msg ma change krva no thodo baki script e j reva deva ni
+load balance ma jva nu
+create load balance
+classic load balancer last ma hse ema java nu and create krva nu
+create load balance
+enabled vpc configuration enable krva nu
+unique name aapva nu
+subnets add krva na regions hse e bdha
+next
+security group select krva na(2)
+next
+response timeout ma 5 aapva nu
+interval ma 10
+next
+add instance
+key(name) value(discrription ma gme te)
+create krva nu
+
+je load balance bnyu hse ene click kri ne dns name copy krva nu(.com) sudhi nu name leva nu
+
+
+
+>>>>>9(Auto Scaling)
+
+EC2-->Auto scaling-->launch configuration
+create launch configuration
+ema upar notification par jai
+Launch template ma jva nu
+template-name
+ami-id - instance mathi leva ni
+instance-type(t2.micro)
+key-pair (new je create kri hoi e)
+security group-latest hoi e
+Advance details ma jva nu
+user data ma script paste karva ni
+
+#!/bin/bash
+yum -y install httpd
+systemctl enable httpd
+systemctl start httpd
+echo '<html><h1>Hello From Your Web Server!</h1></html>' > /var/www/html/index.html
+
+create launch template
+
+then go in auto scaling group
+Create Auto Scaling group
+name
+Launch template ma aapnu template select krva nu
+next
+VPC default rakhva nu
+availability zone ma bdha add krva na
+next
+health check ELB check krva nu(enable)
+ema 60 krva nu
+next
+desired-2
+minimum-1
+maximum-5
+next
+add notification skip krva nu
+then go in our security group and set inbound rules(HTTP)
+then instance run krva na
+n then terminate instance krva na
+then automatic instance create thase
+e run thase etle automatic script run thase.
+
+>>>>>>10(Docker)
+
+simple instance create krva no(without script)
+mobax jode connect krva no
+
+sudo -i
+yum install docker
+docker --version
+start docker service
+docker image pull alpine
+docker container -i -t --name c1 alpine ash
+ifconfig
+
+duplicate window open krva ni Mobax ma aapda j instance ni
+
+sudo su
+docker container -i -t --name c2 alpine ash
+ifconfig
+ping (IPadrees aave ene C1 ne ping marva ni)
+
+
+
+
+>>>>>>12(S3 with CLI)
+
+
+aws --version
+aws configure
+
+create bucket 
+	aws s3api create-bucket --bucket lalkibucket --region us-east-1
+	
+Set policy 
+	aws s3api put-bucket-policy --bucket lalkibucket --policy file://C:\Users\khushbu\Desktop\bucket_policy.json
+	
+upload file 
+cd Desktop
+cd S3(folder nu name jema error n index file hse e)
+
+	aws s3 sync . s3://lalkibucket
+	
+	(folder banavanu ama javanu folder ma j bane file mukvani)
+	
+define index & error page
+	aws s3 website s3://lalkibucket/ --index-document index.html --error-document error.html
+	
+Run
+
+	http://lalkibucket.s3-website-us-east-1.amazonaws.com/
+	
+	bucket-name.s3-website-us-east-1.amazonaws.com
+	
+back up from bucket:
+	aws s3 sync s3://lalkibucket .
+
+
+delete bucket
+	aws s3api delete-bucket --bucket lalkibucket --region us-east-1
+
+
+
+
+>>>>>Simple S3 bucket with CLI(without policy)
+
+
+Create s3 bucket:-
+		aws s3api create-bucket --bucket gvpdemo --region us-east-1
+		
+Upload Files in bucket:-
+		aws s3 cp C:\s3Files\index.html s3://gvpdemo/
+		
+List of bucket:-
+		aws s3 ls
+	
+List of file in existing bucket:-
+		aws s3 ls s3://gvpdemo
+		
+public-read s3 bucket file access:-
+		aws s3api put-object-acl --bucket gvpdemo --key error.html --acl public-read
+
+
+
+
+
+>>>>>>VPC
+
+go in VPC service.
+first generate Elastic IP.
+	Allocate elastic IP(Add tage ma jai name aapva nu)
+	allocate
+
+VPC dashboard
+
+launch vpc Wizaed
+	Select second option(VPC with public and private subnets)
+select it
+VPC nu nam aapva nu
+Elastic IP allocation ID - je create kryu hoi e select krva nu
+
+then create VPC
+ok
+
+then go in route table
+select first route table and give name it.(public & private)
+
+select first public and go on subnet association and edit it.
+then select public route 
+
+and same as private routetable.
+
+then go on dashboard.
+then go in instance.
+
+create first instance.
+	3rd step configure instance 
+		network (aapnu VPC select krva nu)
+		subnet(private leva nu)
+		Auto-assign public IP(Disable)krva ni
+	
+	script mukva ni
+	
+	5th step ma tag add kri deva ni
+
+	6th step Configure Securtiy group
+		HTTP
+		ALL traffic(0.0.0.0)
+	then launch it.
+
+create second instance
+	
+	3rd step configure instance 
+		network (aapnu VPC select krva nu)
+		subnet(public leva nu)
+		Auto-assign public IP(Enable)krva ni
+	
+	5th step ma tag add kri deva ni
+
+	6th step Configure Securtiy group(Existing Security group leva nu 
+			je first instance ma hatu e j)
+	then launch it.
+
+public instance connect with mobax
+
+vi demo.pem
+	(instance create kryo tyar vali key ni details paste krva ni)
+chmod 400 demo.pem
+ssh -i demo.pem ec2-user@(private IP Paste krva nu)
+
+ping google.com
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>CLI
+
+
+gmail ma cli search krva nu
+cli valo mail hse 
+cli install valo mail open krva no n e link pr click krva nu
+cmd open krva nu and 
+aws configure
+secret key lab mathi leva ni
+default region (us-east-1)
+json
+c drive>>users>>ema .aws nam nu folder bnse>>credential>>ema lab valu bdhu copy paste krva nu
+bdhu remove kri ne paste krva nu notepad file ma
+default na niche  aam lkhva nu(region=us-east-1)
+
+
+step 1:-
+
+			aws configure
+		AWS Access Key ID [None]: ASIASKOWRGAGEWYOJSZL
+		AWS Secret Access Key [None]: e3QsIxp6XHzNw5L/unT81JgRk1T44Swa9ibB0uNa
+		Default region name [None]: us-east-1
+		Default output format [None]: json
+		
+		///--------
+		  [default]
+			region=us-east-1
+			aws_access_key_id=ASIASKOWRGAGEWYOJSZL
+			aws_secret_access_key=e3QsIxp6XHzNw5L/unT81JgRk1T44Swa9ibB0uNa
+			aws_session_token=FwoGZXIvYXdzEDgaDIw7tQ1cyyGD4CK1NSK6AS+LvF0gzCl2e55XXEbbA9CQ48cd2C98kSatYc1lBJjvMmWHuIXCrcGqaJIhl1Pwu3MuudxP179N+l1Ff2mt/GfeXRVdp/aZtOgJU9SBmEAyf2qRsFJHNBQBk3eNoG6I3YjqZpFK1mvUcvDGAPEVE1EdRFLgob1Xu6zHnqGUXbi/xSToS7Z4tvD4yOJIs6buMVrWQwox19WiFn6gVHAParn3xb5/7NVRy+FSM/z6Vw8rxQtSvqo/qZLpliiXkvCLBjItADfNQ72hre61eUtLCVVq6QitymNN9GRpLsNt2NqikdZzZUa13ky1wmy7aTL6
+					
+step 2:-
+
+    aws ec2 describe-regions
+
+step 3:
+
+    aws ec2 describe-security-groups
+	
+step 4:
+
+   aws ec2 run-instances --image-id ami-02e136e904f3da870  --security-group-ids sg-045410b38afab9eba --instance-type t2.micro
+   
+step 5:-
+
+   aws ec2 stop-instances --instance-ids i-0a98000e77cc72a44
+   
+step 6:-
+
+   aws ec2 start-instances --instance-ids i-0a98000e77cc72a44
+   
+step 7:-
+
+   aws ec2 terminate-instances --instance-ids i-0a98000e77cc72a44
+
+
+
+

@@ -1,0 +1,22 @@
+create bucket 
+	aws s3api create-bucket --bucket mygvpnew --region us-east-1
+	
+Set policy 
+	aws s3api put-bucket-policy --bucket mygvpnew --policy file://C:\Users\st\Desktop\bucket_policy.json
+	
+upload file 
+	aws s3 sync . s3://mygvpnew
+	
+	(folder banavanu ama javanu folder ma j bane file mukvani)
+	
+define index & error page
+	aws s3 website s3://mygvpnew/ --index-document index.html --error-document error.html
+	
+Run
+
+	http://mygvpnew.s3-website-us-east-1.amazonaws.com/
+	
+	bucket-name.s3-website-us-east-1.amazonaws.com
+	
+back up from bucket:
+	aws s3 sync s3://mygvpnew .
