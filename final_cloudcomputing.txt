@@ -1,0 +1,244 @@
+**************************************************************
+practical 1::- (autoscaling)
+
+step 1: launch template
+
+step 2: template name
+		select ami
+		select instance type t2 micro
+		key pair select pem file
+		select ec2-classic
+		Availability Zone us-east-1
+		select security group
+		
+step 3: addvanced setting ma jayne script paste karvani
+		then create and launch
+		
+step 4: create auto scaling group
+
+		auto scaling name 
+		select template
+		default vpc select
+		Availability Zones and subnets je lidhu hoy ae
+		Desired capacity
+		2
+		Minimum capacity
+		1
+		Maximum capacity
+		5
+		
+		add notification
+		
+
+
+
+********************************************************************
+practical 2::- (vpc)
+
+step 1: go to services vpc
+
+step 2: elastic ip generate
+
+step 3: go to vpc dashboard 
+and launch vpc
+
+step 4: select public private subnet (2)
+
+step 5: vpc name
+		availability zone 1 and 2
+		elastic ip(select default)
+step 6:create vpc
+
+step 7: go to vpc dashboard in launch ec2 instance
+
+step 8: network : select your vpc	
+		subnet : public subnet	
+		Auto-assign Public IP: enable
+		
+step 9: network : select your vpc	
+		subnet : private subnet	
+		Auto-assign Public IP: disable
+		
+step 10: security group select in exsiting in private instance
+step 11: copy public ip and connect to mabaxterm
+
+ssh ec2-user@(paste private ip)
+
+yes
+
+vi demo.pem(create a file)
+pem file copy
+
+chmod 400 demo.pem
+
+ssh -i demo.pem ec2-user@(paste private ip)
+
+ping google.com
+
+ping (public id)
+
+(note : please set inbound rules custom8080 alltrafic http ssh)
+
+
+*******************************************************************************8
+practical 3::-(Dockerkomal) mobaxterm
+
+Step:1 create instanse
+
+Step:2 mobaxterm conect instance
+
+Step:3 sudo -s
+
+Step:4 yum install docker
+
+Step:5 service docker start
+
+Step:6 docker image ls(image che ke nay jova mate)
+
+Step:7 docker image pull alpine
+
+Step:8 docker container run -i -t --name c1 alpine ash()
+
+Step:9 oprn second terminal 
+
+Step:10 sudo -second
+
+Step:11 docker container run -i -t --name c2 alpine ash
+
+Step:12 main terminal ma ping maravani je second tarminal na ip thi hoy amnathi 
+
+Step:13 second terminal ma pan ping maravani main terminal ni 
+
+Step:14 docker container ls -a(-a means jetali image stop ke terminet hoy ke runing hoy aa badhi dekhade)
+
+Step:15 docker container rm c1
+
+
+
+**************************************************************************8
+practical 4::- (ec2) direct connect not cli 
+
+1)aws ec2 run-instances --image-id ami-0ed9277fb7eb570c9 --count 1 --instance-type t2.micro  --security-group-ids  sg-041fb138557e390e4 --key-name vockey (lakhvanu)
+
+instance create
+mobax connect 
+in mobax
+	sudo su
+	yum install java
+yum install java-devel
+wget (apace tomact download ni link paste krva ni)
+tar -xvf apache-tomcat-10.0.12.tar.gz
+ls
+cd apache-tomcat-10.0.12/
+ls
+cd webapps
+ls
+mkdir kkk
+ls
+cd kkk/
+mkdir WEB-INF
+mkdir classes
+ls
+nano index.html
+<html>
+<body>
+<h1>helloooo!!!!!</h1>
+</body>
+</html>
+
+cat index.html
+cd ..
+ls
+cd ..
+ls
+cd conf
+ls
+vim tomcat-users.xml
+	(role=manager-gui name aapva nu
+	 username=tomcat
+	password=tomcat
+
+	total 5 mathi 2 line rakhva ni)
+esc : wq(aavi rite bar avashe)
+cd ..
+cd webapps
+ls
+cd host-manager/
+ls
+cd META-INF
+ls
+vim context.xml
+	(Valve vali line ne comment krva ni)
+cd ..
+cd WEB-INF
+ls
+vim manager.xml
+(Valve vali line ne comment krva ni)
+cd ..
+cd ..
+ls
+cd manager
+ls
+cd META-INF
+ls
+vim context.xml
+(Valve vali line ne comment krva ni)
+cd ..
+cd ..
+cd ..
+ls
+cd bin
+ ./startup.sh
+
+
+********************************************************
+practical 5::- (s3_bucket) ---cli
+
+create bucket 
+	aws s3api create-bucket --bucket 28bucket1 --region us-east-1
+	
+Set policy 
+	aws s3api put-bucket-policy --bucket 28bucket1 --policy file://C:\Users\Urvisha\Documents\Cloud_Cumputing_28\bucket_policy.json
+	
+upload file 
+	aws s3 sync . s3://28bucket1 (new cmd open karvanu)
+	
+	(folder banavanu ama javanu folder ma j bane file mukvani)
+	
+define index & error page
+	aws s3 website s3://28bucket1/ --index-document index.html --error-document error.html
+	
+Run
+
+	http://28bucket1.s3-website-us-east-1.amazonaws.com/
+	
+	bucket-name.s3-website-us-east-1.amazonaws.com
+	
+back up from bucket:
+	aws s3 sync s3://28bucket1 .
+
+delete 
+aws s3api delete-bucket --bucket 28bucket1 --region us-east-1
+
+
+for empty bucket 
+aws s3 rm s3://28bucket1 --recursive
+
+
+*************************************************
+(bucket_policy.json)
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::28bucket2/*"
+        }
+    ]
+}
+
+
