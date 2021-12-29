@@ -1,0 +1,8 @@
+aws configure
+aws ec2 describe-vpcs
+(Je Default hoy tenu "VpcId" Copy krvanu )
+aws ec2 create-security-group --group-name harsh1234 --description "ec2 security group using cli" --vpc-id vpc-005c3d0afa6c8fcd4(<-- "VpcId" copy krelu nakhvanu) 
+("GroupId" Copy Karvanu)
+aws ec2 create-key-pair --key-name harsh1234 --query "KeyMaterial" --output text > harsh1234.pem
+aws ec2 run-instances --image-id ami-0ed9277fb7eb570c9 --count 1 --instance-type t2.micro --key-name harsh1234 --security-group-ids sg-017e2b342bb5cc296(<-- "GroupId" copy krelu nakhvanu)
+(aws ma jai Security Groups ma jai harsh1234 group nu inbound rules ma Type -> SSH , Source -> Anywhere-ipv4 set kravanu)
